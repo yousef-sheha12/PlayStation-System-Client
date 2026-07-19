@@ -23,7 +23,16 @@ api.interceptors.request.use(
 );
 
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    const body = response.data;
+    if (body && typeof body === "object" && "isSuccess" in body) {
+      if (!body.isSuccess) {
+        return Promise.reject({ message: body.message || "Request failed", errors: body.errors });
+      }
+      response.data = body.data;
+    }
+    return response;
+  },
   (error) => {
     if (error.response?.status === 401) {
       if (typeof window !== "undefined") {

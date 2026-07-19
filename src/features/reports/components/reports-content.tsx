@@ -21,8 +21,7 @@ type ReportType = 'daily' | 'monthly' | 'yearly';
 export default function ReportsContent() {
   const { t } = useTranslation();
   const [reportType, setReportType] = useState<ReportType>('daily');
-  const { data: response, isLoading: statsLoading } = useDashboard();
-  const dashboard = response?.data;
+  const { data: dashboard, isLoading: statsLoading } = useDashboard();
 
   if (statsLoading) return <Loader size="lg" text={t('reports.loadingReports')} />;
 

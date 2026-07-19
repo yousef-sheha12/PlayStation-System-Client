@@ -1,64 +1,64 @@
 import api from '@/lib/axios';
-import { Session, ApiResponse, SessionProduct } from '@/types';
+import { Session, SessionProduct } from '@/types';
 
 export const sessionService = {
-  start: async (data: { deviceId: number; customerId?: number; customerName?: string; hourlyRate: number }) => {
-    const response = await api.post<ApiResponse<Session>>('/sessions/start', data);
+  start: async (data: { deviceId: number; customerId?: number; customerName?: string; hourlyRate: number }): Promise<Session> => {
+    const response = await api.post<Session>('/sessions/start', data);
     return response.data;
   },
 
-  pause: async (id: number) => {
-    const response = await api.post<ApiResponse<Session>>(`/sessions/${id}/pause`);
+  pause: async (id: number): Promise<Session> => {
+    const response = await api.post<Session>(`/sessions/${id}/pause`);
     return response.data;
   },
 
-  resume: async (id: number) => {
-    const response = await api.post<ApiResponse<Session>>(`/sessions/${id}/resume`);
+  resume: async (id: number): Promise<Session> => {
+    const response = await api.post<Session>(`/sessions/${id}/resume`);
     return response.data;
   },
 
-  end: async (id: number, discount?: number) => {
-    const response = await api.post<ApiResponse<Session>>(`/sessions/${id}/end`, discount ? { discount } : undefined);
+  end: async (id: number, discount?: number): Promise<Session> => {
+    const response = await api.post<Session>(`/sessions/${id}/end`, discount ? { discount } : undefined);
     return response.data;
   },
 
-  getActive: async () => {
+  getActive: async (): Promise<Session[]> => {
     const response = await api.get<Session[]>('/sessions/active');
     return response.data;
   },
 
-  getAll: async () => {
+  getAll: async (): Promise<Session[]> => {
     const response = await api.get<Session[]>('/sessions');
     return response.data;
   },
 
-  getById: async (id: number) => {
-    const response = await api.get<ApiResponse<Session>>(`/sessions/${id}`);
+  getById: async (id: number): Promise<Session> => {
+    const response = await api.get<Session>(`/sessions/${id}`);
     return response.data;
   },
 
-  getByStatus: async (status: string) => {
+  getByStatus: async (status: string): Promise<Session[]> => {
     const response = await api.get<Session[]>(`/sessions/status/${status}`);
     return response.data;
   },
 
-  getByDevice: async (deviceId: number) => {
+  getByDevice: async (deviceId: number): Promise<Session[]> => {
     const response = await api.get<Session[]>(`/sessions/device/${deviceId}`);
     return response.data;
   },
 
-  getByDateRange: async (startDate: string, endDate: string) => {
+  getByDateRange: async (startDate: string, endDate: string): Promise<Session[]> => {
     const response = await api.get<Session[]>('/sessions/date-range', { params: { startDate, endDate } });
     return response.data;
   },
 
-  addProduct: async (sessionId: number, data: { productId: number; quantity: number }) => {
-    const response = await api.post<ApiResponse<SessionProduct>>(`/sessions/${sessionId}/products`, data);
+  addProduct: async (sessionId: number, data: { productId: number; quantity: number }): Promise<SessionProduct> => {
+    const response = await api.post<SessionProduct>(`/sessions/${sessionId}/products`, data);
     return response.data;
   },
 
   removeProduct: async (sessionId: number, productId: number) => {
-    const response = await api.delete<ApiResponse<void>>(`/sessions/${sessionId}/products/${productId}`);
+    const response = await api.delete<void>(`/sessions/${sessionId}/products/${productId}`);
     return response.data;
   },
 };

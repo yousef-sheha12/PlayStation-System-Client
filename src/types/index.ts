@@ -198,11 +198,13 @@ export interface DeviceSessionMetric {
 }
 
 export interface PaginatedResponse<T> {
-  data: T[];
+  items: T[];
   totalCount: number;
   pageNumber: number;
   pageSize: number;
   totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
 }
 
 export interface ApiResponse<T> {

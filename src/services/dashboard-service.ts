@@ -1,9 +1,9 @@
 import api from '@/lib/axios';
-import { DashboardDto, ApiResponse } from '@/types';
+import { DashboardDto } from '@/types';
 
 export const dashboardService = {
-  getDashboard: async () => {
-    const response = await api.get<ApiResponse<DashboardDto>>('/dashboard');
+  getDashboard: async (): Promise<DashboardDto> => {
+    const response = await api.get<DashboardDto>('/dashboard');
     return response.data;
   },
 };

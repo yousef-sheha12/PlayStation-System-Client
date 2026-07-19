@@ -41,8 +41,8 @@ export default function StartSessionModal({ isOpen, onClose, device }: StartSess
       },
       {
         onSuccess: (response) => {
-          if (response.data) {
-            addSession(device, response.data);
+          if (response) {
+            addSession(device, response);
           }
           reset();
           onClose();

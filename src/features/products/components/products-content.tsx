@@ -42,7 +42,7 @@ export default function ProductsContent() {
   };
   const handleDelete = () => { if (deleteId) deleteProduct(deleteId, { onSuccess: () => setDeleteId(null) }); };
 
-  const products = data?.data || [];
+  const products = data?.items || [];
   const totalPages = data?.totalPages || 1;
 
   return (

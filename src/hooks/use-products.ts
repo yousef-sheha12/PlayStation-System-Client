@@ -4,7 +4,7 @@ import { QUERY_KEYS } from '@/constants';
 import { PaginatedResponse, Product } from '@/types';
 import toast from 'react-hot-toast';
 
-export function useProducts(params: { pageNumber?: number; pageSize?: number; searchTerm?: string; categoryId?: number; isLowStock?: boolean }) {
+export function useProducts(params?: { pageNumber?: number; pageSize?: number; searchTerm?: string; categoryId?: number; isLowStock?: boolean }) {
   return useQuery<PaginatedResponse<Product>>({
     queryKey: [QUERY_KEYS.PRODUCTS, params],
     queryFn: () => productService.getPaginated(params),

@@ -52,7 +52,7 @@ export default function SettingsContent() {
         onSuccess: () => { setFormOpen(false); setEditingDevice(null); reset(); },
       });
     } else {
-      createDevice({ ...data, status: 'Available' }, {
+      createDevice(data, {
         onSuccess: () => { setFormOpen(false); reset(); },
       });
     }

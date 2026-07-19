@@ -23,7 +23,7 @@ export default function InventoryContent() {
   const [adjustQty, setAdjustQty] = useState(1);
 
   const { data: productsResponse, isLoading } = useProducts({ pageNumber: 1, pageSize: 1000 });
-  const products = productsResponse?.data || [];
+  const products = productsResponse?.items || [];
   const { mutate: increaseQty, isPending: increasing } = useIncreaseQuantity();
   const { mutate: decreaseQty, isPending: decreasing } = useDecreaseQuantity();
 

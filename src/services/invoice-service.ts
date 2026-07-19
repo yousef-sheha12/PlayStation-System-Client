@@ -1,29 +1,29 @@
 import api from '@/lib/axios';
-import { Invoice, ApiResponse } from '@/types';
+import { Invoice } from '@/types';
 
 export const invoiceService = {
-  getAll: async () => {
+  getAll: async (): Promise<Invoice[]> => {
     const response = await api.get<Invoice[]>('/invoices');
     return response.data;
   },
 
-  getById: async (id: number) => {
-    const response = await api.get<ApiResponse<Invoice>>(`/invoices/${id}`);
+  getById: async (id: number): Promise<Invoice> => {
+    const response = await api.get<Invoice>(`/invoices/${id}`);
     return response.data;
   },
 
-  getBySessionId: async (sessionId: number) => {
-    const response = await api.get<ApiResponse<Invoice>>(`/invoices/session/${sessionId}`);
+  getBySessionId: async (sessionId: number): Promise<Invoice> => {
+    const response = await api.get<Invoice>(`/invoices/session/${sessionId}`);
     return response.data;
   },
 
   generate: async (data: { sessionId: number; discount?: number; taxRate?: number; paymentMethod?: string }) => {
-    const response = await api.post<ApiResponse<Invoice>>('/invoices/generate', data);
+    const response = await api.post<Invoice>('/invoices/generate', data);
     return response.data;
   },
 
   updatePayment: async (invoiceId: number, isPaid: boolean) => {
-    const response = await api.put<ApiResponse<Invoice>>(`/invoices/${invoiceId}/payment`, null, { params: { isPaid } });
+    const response = await api.put<Invoice>(`/invoices/${invoiceId}/payment`, null, { params: { isPaid } });
     return response.data;
   },
 };

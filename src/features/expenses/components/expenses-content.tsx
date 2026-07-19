@@ -39,7 +39,7 @@ export default function ExpensesContent() {
     }
   };
 
-  const expenses = data?.data || [];
+  const expenses = data?.items || [];
   const totalPages = data?.totalPages || 1;
 
   return (

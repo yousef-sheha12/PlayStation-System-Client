@@ -1,5 +1,4 @@
 import api from '@/lib/axios';
-import { ApiResponse } from '@/types';
 
 export interface ProductStockAlert {
   id: number;
@@ -10,23 +9,23 @@ export interface ProductStockAlert {
 }
 
 export const inventoryService = {
-  getLowStock: async () => {
-    const response = await api.get<ApiResponse<ProductStockAlert[]>>('/inventory/low-stock');
+  getLowStock: async (): Promise<ProductStockAlert[]> => {
+    const response = await api.get<ProductStockAlert[]>('/inventory/low-stock');
     return response.data;
   },
 
-  getOutOfStock: async () => {
-    const response = await api.get<ApiResponse<ProductStockAlert[]>>('/inventory/out-of-stock');
+  getOutOfStock: async (): Promise<ProductStockAlert[]> => {
+    const response = await api.get<ProductStockAlert[]>('/inventory/out-of-stock');
     return response.data;
   },
 
   increaseQuantity: async (productId: number, quantity: number) => {
-    const response = await api.post<ApiResponse<void>>(`/inventory/${productId}/increase`, { quantity });
+    const response = await api.post<void>(`/inventory/${productId}/increase`, { quantity });
     return response.data;
   },
 
   decreaseQuantity: async (productId: number, quantity: number) => {
-    const response = await api.post<ApiResponse<void>>(`/inventory/${productId}/decrease`, { quantity });
+    const response = await api.post<void>(`/inventory/${productId}/decrease`, { quantity });
     return response.data;
   },
 };

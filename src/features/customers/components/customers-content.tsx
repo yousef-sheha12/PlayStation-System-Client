@@ -55,7 +55,7 @@ export default function CustomersContent() {
     }
   };
 
-  const customers = data?.data || [];
+  const customers = data?.items || [];
   const totalPages = data?.totalPages || 1;
 
   return (

@@ -13,7 +13,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
   const router = useRouter();
 
   if (isLoading) return <Loader size="lg" text="Loading invoice..." />;
-  if (!data?.data) return <div className="text-center py-12 text-gray-500">Invoice not found</div>;
+  if (!data) return <div className="text-center py-12 text-gray-500">Invoice not found</div>;
 
-  return <InvoiceDetail invoice={data.data} onBack={() => router.push('/invoices')} />;
+  return <InvoiceDetail invoice={data} onBack={() => router.push('/invoices')} />;
 }

@@ -23,8 +23,7 @@ import { useTranslation } from '@/hooks/use-translation';
 
 export default function DashboardContent() {
   const { t } = useTranslation();
-  const { data: response, isLoading: statsLoading } = useDashboard();
-  const dashboard = response?.data;
+  const { data: dashboard, isLoading: statsLoading } = useDashboard();
 
   if (statsLoading) {
     return <Loader size="lg" text={t('dashboard.loadingDashboard')} />;

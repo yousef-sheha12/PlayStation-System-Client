@@ -35,15 +35,10 @@ export const STORAGE_KEYS = {
 
 export const QUERY_KEYS = {
   PRODUCTS: "products",
-  CATEGORIES: "categories",
   DEVICES: "devices",
   SESSIONS: "sessions",
-  CUSTOMERS: "customers",
   INVOICES: "invoices",
-  EXPENSES: "expenses",
   DASHBOARD: "dashboard",
-  REPORTS: "reports",
-  INVENTORY: "inventory",
 } as const;
 
 export const PAGE_SIZES = [10, 25, 50, 100] as const;
@@ -58,17 +53,6 @@ export const DEVICE_ICONS: Record<string, string> = {
   PC: "🖥️",
   Switch: "🎮",
 };
-
-export const EXPENSE_CATEGORIES = [
-  "Rent",
-  "Utilities",
-  "Maintenance",
-  "Supplies",
-  "Salaries",
-  "Equipment",
-  "Marketing",
-  "Other",
-] as const;
 
 export const CHART_COLORS = {
   primary: "#3B82F6",

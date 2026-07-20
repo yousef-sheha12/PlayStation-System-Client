@@ -15,13 +15,6 @@ export interface LoginCredentials {
   password: string;
 }
 
-export interface Category {
-  id: number;
-  name: string;
-  description?: string;
-  productCount: number;
-}
-
 export interface Product {
   id: number;
   name: string;
@@ -72,15 +65,6 @@ export interface SessionProduct {
   totalPrice: number;
 }
 
-export interface Customer {
-  id: number;
-  name: string;
-  email?: string;
-  phoneNumber?: string;
-  address?: string;
-  sessionCount: number;
-}
-
 export interface Invoice {
   id: number;
   sessionId: number;
@@ -92,7 +76,7 @@ export interface Invoice {
   taxRate: number;
   taxAmount: number;
   totalAmount: number;
-  paymentMethod: 'Cash' | 'Card' | 'DigitalWallet';
+  paymentMethod: 'Cash' | 'Card' | 'MobilePayment';
   isPaid: boolean;
   paidAt?: string;
   createdAt: string;
@@ -107,15 +91,6 @@ export interface InvoiceItem {
   totalPrice: number;
 }
 
-export interface Expense {
-  id: number;
-  description: string;
-  amount: number;
-  category?: string;
-  expenseDate: string;
-  notes?: string;
-}
-
 export interface DashboardDto {
   todayRevenue: number;
   monthlyRevenue: number;
@@ -125,12 +100,8 @@ export interface DashboardDto {
   occupiedDevices: number;
   totalProducts: number;
   lowStockCount: number;
-  totalCustomers: number;
-  todayExpenses: number;
-  monthlyExpenses: number;
   deviceSummaries: DeviceStatusSummary[];
   revenueChart: RevenueChartData;
-  expenseChart: ExpenseChartData;
   deviceUsageChart: DeviceUsageChartData;
   sessionChart: SessionChartData;
 }
@@ -148,11 +119,6 @@ export interface RevenueChartData {
   dailyProfit: DailyMetric[];
 }
 
-export interface ExpenseChartData {
-  byCategory: CategoryMetric[];
-  dailyExpenses: DailyMetric[];
-}
-
 export interface DeviceUsageChartData {
   usageByDevice: DeviceUsageMetric[];
   statusDistribution: StatusDistributionMetric[];
@@ -167,12 +133,6 @@ export interface SessionChartData {
 export interface DailyMetric {
   date: string;
   value: number;
-}
-
-export interface CategoryMetric {
-  category: string;
-  amount: number;
-  count: number;
 }
 
 export interface DeviceUsageMetric {

@@ -66,7 +66,7 @@ export const useSessionStore = create<SessionState>((set, get) => ({
     set((state) => {
       const newTimers = new Map(state.timers);
       const timer = newTimers.get(deviceId);
-      if (timer && timer.pausedAt === undefined) {
+      if (timer && timer.pausedAt === undefined && !isNaN(seconds) && seconds >= 0) {
         newTimers.set(deviceId, { ...timer, elapsedSeconds: seconds });
       }
       return { timers: newTimers };
@@ -79,6 +79,6 @@ export const useSessionStore = create<SessionState>((set, get) => ({
 
   getElapsed: (deviceId) => {
     const timer = get().timers.get(deviceId);
-    return timer?.elapsedSeconds || 0;
+    return timer?.elapsedSeconds ?? 0;
   },
 }));

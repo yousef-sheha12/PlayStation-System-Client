@@ -25,7 +25,6 @@ export function useCreateProduct() {
     mutationFn: productService.create,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.PRODUCTS] });
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.INVENTORY] });
       toast.success('Product created successfully');
     },
     onError: () => {
@@ -37,11 +36,10 @@ export function useCreateProduct() {
 export function useUpdateProduct() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, data }: { id: number; data: { name: string; description?: string; price: number; quantity: number; lowStockThreshold?: number; categoryId: number } }) =>
+    mutationFn: ({ id, data }: { id: number; data: { name: string; description?: string; price: number; quantity: number; lowStockThreshold?: number; categoryId?: number } }) =>
       productService.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.PRODUCTS] });
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.INVENTORY] });
       toast.success('Product updated successfully');
     },
     onError: () => {
@@ -56,7 +54,6 @@ export function useDeleteProduct() {
     mutationFn: productService.delete,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.PRODUCTS] });
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.INVENTORY] });
       toast.success('Product deleted successfully');
     },
     onError: () => {

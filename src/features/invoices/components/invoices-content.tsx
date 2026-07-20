@@ -41,7 +41,7 @@ export default function InvoicesContent() {
                   <th className="text-gray-600">{t('invoices.date')}</th>
                   <th className="text-gray-600">{t('invoices.device')}</th>
                   <th className="text-gray-600">{t('invoices.customer')}</th>
-                  <th className="text-gray-600">{t('invoices.duration')}</th>
+                  <th className="text-gray-600">{t('invoices.paymentMethod')}</th>
                   <th className="text-gray-600">{t('invoices.total')}</th>
                   <th className="text-gray-600 text-right">{t('common.actions')}</th>
                 </tr>

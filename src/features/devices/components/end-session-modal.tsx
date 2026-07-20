@@ -9,6 +9,7 @@ import { useSessionStore } from '@/store/session-store';
 import { useCartStore } from '@/store/cart-store';
 import { formatCurrency, formatTime } from '@/utils';
 import { useRouter } from 'next/navigation';
+import { useTranslation } from '@/hooks/use-translation';
 
 interface EndSessionModalProps {
   isOpen: boolean;
@@ -18,6 +19,7 @@ interface EndSessionModalProps {
 }
 
 export default function EndSessionModal({ isOpen, onClose, device, elapsedSeconds }: EndSessionModalProps) {
+  const { t } = useTranslation();
   const [discount, setDiscount] = useState(0);
   const { mutate: endSession, isPending } = useEndSession();
   const { getSession, removeSession } = useSessionStore();
@@ -46,35 +48,35 @@ export default function EndSessionModal({ isOpen, onClose, device, elapsedSecond
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="End Session" size="md">
+    <Modal isOpen={isOpen} onClose={onClose} title={t('devices.endSessionTitle')} size="md">
       <div className="space-y-4">
         <div className="bg-gray-50 rounded-xl p-4 space-y-2">
           <div className="flex justify-between text-sm">
-            <span className="text-gray-500">Device</span>
+            <span className="text-gray-500">{t('invoices.device')}</span>
             <span className="font-semibold">{device?.name}</span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-gray-500">Duration</span>
+            <span className="text-gray-500">{t('devices.duration')}</span>
             <span className="font-mono font-semibold">{formatTime(elapsedSeconds)}</span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-gray-500">Hourly Rate</span>
+            <span className="text-gray-500">{t('devices.hourlyRate')}</span>
             <span>{formatCurrency(device?.hourlyRate || 0)}</span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-gray-500">Time Cost</span>
+            <span className="text-gray-500">{t('devices.timeCost')}</span>
             <span className="font-semibold">{formatCurrency(hourlyCost)}</span>
           </div>
           {productsCost > 0 && (
             <div className="flex justify-between text-sm">
-              <span className="text-gray-500">Products Cost</span>
+              <span className="text-gray-500">{t('devices.productsCost')}</span>
               <span className="font-semibold">{formatCurrency(productsCost)}</span>
             </div>
           )}
           <div className="divider my-1" />
           <div className="form-control">
             <label className="label">
-              <span className="label-text font-medium text-gray-700">Discount ($)</span>
+              <span className="label-text font-medium text-gray-700">{t('devices.discount')}</span>
             </label>
             <input
               type="number"
@@ -87,17 +89,17 @@ export default function EndSessionModal({ isOpen, onClose, device, elapsedSecond
           </div>
           <div className="divider my-1" />
           <div className="flex justify-between">
-            <span className="font-bold text-gray-800">Grand Total</span>
+            <span className="font-bold text-gray-800">{t('devices.grandTotal')}</span>
             <span className="font-bold text-xl text-green-600">{formatCurrency(grandTotal)}</span>
           </div>
         </div>
 
         <div className="flex gap-3">
           <Button variant="ghost" className="flex-1" onClick={onClose}>
-            Cancel
+            {t('common.cancel')}
           </Button>
           <Button variant="danger" className="flex-1" loading={isPending} onClick={handleEnd}>
-            End Session
+            {t('devices.end')}
           </Button>
         </div>
       </div>

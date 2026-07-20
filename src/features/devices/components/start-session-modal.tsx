@@ -8,6 +8,7 @@ import { Device } from '@/types';
 import { startSessionSchema, type StartSessionFormData } from '../types';
 import { useStartSession } from '@/hooks/use-sessions';
 import { useSessionStore } from '@/store/session-store';
+import { useTranslation } from '@/hooks/use-translation';
 
 interface StartSessionModalProps {
   isOpen: boolean;
@@ -16,6 +17,7 @@ interface StartSessionModalProps {
 }
 
 export default function StartSessionModal({ isOpen, onClose, device }: StartSessionModalProps) {
+  const { t } = useTranslation();
   const { mutate: startSession, isPending } = useStartSession();
   const addSession = useSessionStore((s) => s.addSession);
 
@@ -52,15 +54,15 @@ export default function StartSessionModal({ isOpen, onClose, device }: StartSess
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title={`Start Session - ${device?.name}`} size="sm">
+    <Modal isOpen={isOpen} onClose={onClose} title={t('devices.startSessionTitle', { device: device?.name || '' })} size="sm">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div className="form-control">
           <label className="label">
-            <span className="label-text font-medium text-gray-700">Customer Name (Optional)</span>
+            <span className="label-text font-medium text-gray-700">{t('devices.customerName')}</span>
           </label>
           <input
             type="text"
-            placeholder="Enter customer name"
+            placeholder={t('devices.customerNamePlaceholder')}
             className="input input-bordered w-full rounded-xl bg-gray-50 border-gray-200 focus:border-blue-400 transition-all"
             {...register('customerName')}
           />
@@ -68,7 +70,7 @@ export default function StartSessionModal({ isOpen, onClose, device }: StartSess
 
         <div className="form-control">
           <label className="label">
-            <span className="label-text font-medium text-gray-700">Hourly Rate ($)</span>
+            <span className="label-text font-medium text-gray-700">{t('devices.hourlyRateLabel')}</span>
           </label>
           <input
             type="number"
@@ -85,10 +87,10 @@ export default function StartSessionModal({ isOpen, onClose, device }: StartSess
 
         <div className="flex gap-3 pt-2">
           <Button type="button" variant="ghost" className="flex-1" onClick={onClose}>
-            Cancel
+            {t('common.cancel')}
           </Button>
           <Button type="submit" variant="success" className="flex-1" loading={isPending}>
-            Start Session
+            {t('devices.startSession')}
           </Button>
         </div>
       </form>

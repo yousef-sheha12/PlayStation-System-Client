@@ -9,17 +9,11 @@ export function usePermissions() {
     isWorker: isWorker(),
 
     canManageProducts: isAdmin(),
-    canManageCategories: isAdmin(),
-    canManageInventory: isAdmin(),
-    canManageExpenses: isAdmin(),
-    canManageReports: isAdmin(),
-    canManageSettings: isAdmin(),
     canManageDevices: isAdmin(),
+    canManageSettings: isAdmin(),
 
     canViewProducts: true,
-    canViewCategories: true,
     canViewDevices: true,
-    canViewCustomers: true,
     canViewInvoices: true,
 
     canStartSession: true,

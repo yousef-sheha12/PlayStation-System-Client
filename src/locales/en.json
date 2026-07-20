@@ -29,12 +29,7 @@
     "dashboard": "Dashboard",
     "devices": "Devices",
     "products": "Products",
-    "categories": "Categories",
-    "inventory": "Inventory",
-    "customers": "Customers",
     "invoices": "Invoices",
-    "reports": "Reports",
-    "expenses": "Expenses",
     "settings": "Settings",
     "managementSystem": "Management System"
   },
@@ -91,7 +86,9 @@
     "timeCost": "Time Cost",
     "productsCost": "Products Cost",
     "discount": "Discount",
-    "grandTotal": "Grand Total"
+    "grandTotal": "Grand Total",
+    "addProduct": "Add Product",
+    "device": "Device"
   },
   "products": {
     "title": "Products",
@@ -118,52 +115,6 @@
     "deleteTitle": "Delete Product",
     "deleteMessage": "Are you sure you want to delete this product? This action cannot be undone."
   },
-  "categories": {
-    "title": "Categories",
-    "subtitle": "Manage product categories",
-    "addCategory": "Add Category",
-    "editCategory": "Edit Category",
-    "createCategory": "Create Category",
-    "categoryName": "Category Name",
-    "categoryNamePlaceholder": "Enter category name",
-    "noCategories": "No categories found",
-    "loadingCategories": "Loading categories...",
-    "deleteTitle": "Delete Category",
-    "deleteMessage": "Are you sure? Products in this category may be affected."
-  },
-  "inventory": {
-    "title": "Inventory",
-    "subtitle": "Manage stock quantities",
-    "lowStockAlert": "{count} product(s) are running low on stock (quantity ≤ 5)",
-    "searchInventory": "Search inventory...",
-    "noInventory": "No inventory items found",
-    "loadingInventory": "Loading inventory...",
-    "increase": "Increase",
-    "decrease": "Decrease",
-    "medium": "Medium",
-    "adjustQuantity": "Adjust Quantity - {product}",
-    "quantityLabel": "Quantity"
-  },
-  "customers": {
-    "title": "Customers",
-    "subtitle": "Manage your customer database",
-    "addCustomer": "Add Customer",
-    "editCustomer": "Edit Customer",
-    "createCustomer": "Create Customer",
-    "searchCustomers": "Search customers...",
-    "customer": "Customer",
-    "contact": "Contact",
-    "address": "Address",
-    "noCustomers": "No customers found",
-    "loadingCustomers": "Loading customers...",
-    "customerName": "Customer Name",
-    "customerNamePlaceholder": "Enter customer name",
-    "emailOptional": "Email (Optional)",
-    "phoneOptional": "Phone (Optional)",
-    "addressOptional": "Address (Optional)",
-    "deleteTitle": "Delete Customer",
-    "deleteMessage": "Are you sure you want to delete this customer?"
-  },
   "invoices": {
     "title": "Invoices",
     "subtitle": "View all generated invoices",
@@ -174,35 +125,9 @@
     "date": "Date",
     "device": "Device",
     "customer": "Customer",
-    "duration": "Duration",
+    "paymentMethod": "Payment Method",
     "total": "Total",
     "thankYou": "Thank you for your visit!"
-  },
-  "expenses": {
-    "title": "Expenses",
-    "subtitle": "Track and manage your expenses",
-    "addExpense": "Add Expense",
-    "editExpense": "Edit Expense",
-    "createExpense": "Create Expense",
-    "searchExpenses": "Search expenses...",
-    "expenseTitle": "Title",
-    "titlePlaceholder": "Expense title",
-    "amount": "Amount",
-    "date": "Date",
-    "noExpenses": "No expenses found",
-    "loadingExpenses": "Loading expenses...",
-    "deleteTitle": "Delete Expense",
-    "deleteMessage": "Are you sure you want to delete this expense?"
-  },
-  "reports": {
-    "title": "Reports",
-    "subtitle": "Business analytics and insights",
-    "daily": "Daily",
-    "monthly": "Monthly",
-    "yearly": "Yearly",
-    "revenueByDevice": "Revenue By Device",
-    "monthlyRevenue": "Monthly Revenue",
-    "loadingReports": "Loading reports..."
   },
   "settings": {
     "title": "Settings",
@@ -216,8 +141,8 @@
     "updateRate": "Update Hourly Rate",
     "updateRateDesc": "Update hourly rate for {device}",
     "newHourlyRate": "New Hourly Rate ($)",
-    "categoriesTitle": "Categories",
-    "categoriesCount": "{count} categories",
+    "productsTitle": "Products",
+    "productsCount": "{count} products",
     "loadingSettings": "Loading settings..."
   },
   "notFound": {

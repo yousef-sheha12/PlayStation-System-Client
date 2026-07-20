@@ -13,7 +13,6 @@ import Pagination from '@/components/ui/pagination';
 import Loader from '@/components/ui/loader';
 import ProductForm from './product-form';
 import { useProducts, useCreateProduct, useUpdateProduct, useDeleteProduct } from '@/hooks/use-products';
-import { useCategories } from '@/hooks/use-categories';
 import { formatCurrency } from '@/utils';
 import { Product } from '@/types';
 import { useTranslation } from '@/hooks/use-translation';
@@ -27,8 +26,7 @@ export default function ProductsContent() {
   const [deleteId, setDeleteId] = useState<number | null>(null);
 
   const { data, isLoading } = useProducts({ pageNumber: page, pageSize: 10, searchTerm: search });
-  const { data: categories = [] } = useCategories();
-  const { mutate: createProduct, isPending: creating } = useCreateProduct();
+    const { mutate: createProduct, isPending: creating } = useCreateProduct();
   const { mutate: updateProduct, isPending: updating } = useUpdateProduct();
   const { mutate: deleteProduct, isPending: deleting } = useDeleteProduct();
 
@@ -85,7 +83,7 @@ export default function ProductsContent() {
         )}
         {totalPages > 1 && <div className="flex justify-center p-4 border-t border-gray-100"><Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} /></div>}
       </Card>
-      <ProductForm isOpen={formOpen} onClose={() => { setFormOpen(false); setEditingProduct(null); }} product={editingProduct} categories={categories} onSubmit={handleFormSubmit} isLoading={creating || updating} />
+      <ProductForm isOpen={formOpen} onClose={() => { setFormOpen(false); setEditingProduct(null); }} product={editingProduct} onSubmit={handleFormSubmit} isLoading={creating || updating} />
       <ConfirmDialog isOpen={!!deleteId} onClose={() => setDeleteId(null)} onConfirm={handleDelete} title={t('products.deleteTitle')} message={t('products.deleteMessage')} confirmText={t('common.delete')} loading={deleting} />
     </div>
   );

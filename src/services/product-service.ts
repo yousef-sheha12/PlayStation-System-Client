@@ -22,12 +22,12 @@ export const productService = {
     return response.data;
   },
 
-  create: async (data: { name: string; description?: string; price: number; quantity: number; lowStockThreshold?: number; categoryId: number }) => {
+  create: async (data: { name: string; description?: string; price: number; quantity: number; lowStockThreshold?: number; categoryId?: number }) => {
     const response = await api.post<Product>('/products', data);
     return response.data;
   },
 
-  update: async (id: number, data: { name: string; description?: string; price: number; quantity: number; lowStockThreshold?: number; categoryId: number }) => {
+  update: async (id: number, data: { name: string; description?: string; price: number; quantity: number; lowStockThreshold?: number; categoryId?: number }) => {
     const response = await api.put<Product>(`/products/${id}`, data);
     return response.data;
   },

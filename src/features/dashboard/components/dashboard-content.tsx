@@ -8,7 +8,6 @@ import {
   Monitor,
   MonitorOff,
   Package,
-  AlertTriangle,
 } from 'lucide-react';
 import StatsCard from './stats-card';
 import RevenueChart from './revenue-chart';
@@ -20,10 +19,22 @@ import Loader from '@/components/ui/loader';
 import { useDashboard } from '@/hooks/use-dashboard';
 import { formatCurrency } from '@/utils';
 import { useTranslation } from '@/hooks/use-translation';
+import { useQuery } from '@tanstack/react-query';
+import { reportService } from '@/services/report-service';
 
 export default function DashboardContent() {
   const { t } = useTranslation();
   const { data: dashboard, isLoading: statsLoading } = useDashboard();
+
+  const { data: mostSoldProducts = [] } = useQuery({
+    queryKey: ['reports', 'most-sold-products'],
+    queryFn: () => reportService.getMostSoldProducts(5),
+  });
+
+  const { data: mostUsedDevices = [] } = useQuery({
+    queryKey: ['reports', 'most-used-devices'],
+    queryFn: () => reportService.getMostUsedDevices(5),
+  });
 
   if (statsLoading) {
     return <Loader size="lg" text={t('dashboard.loadingDashboard')} />;
@@ -37,7 +48,6 @@ export default function DashboardContent() {
     { title: t('dashboard.availableDevices'), value: dashboard?.availableDevices || 0, icon: Monitor, color: 'text-emerald-500', gradient: 'from-emerald-400 to-emerald-500' },
     { title: t('dashboard.occupiedDevices'), value: dashboard?.occupiedDevices || 0, icon: MonitorOff, color: 'text-red-500', gradient: 'from-red-400 to-red-500' },
     { title: t('dashboard.productsCount'), value: dashboard?.totalProducts || 0, icon: Package, color: 'text-purple-500', gradient: 'from-purple-400 to-purple-500' },
-    { title: t('dashboard.lowStockCount'), value: dashboard?.lowStockCount || 0, icon: AlertTriangle, color: 'text-rose-500', gradient: 'from-rose-400 to-rose-500' },
   ];
 
   return (
@@ -51,17 +61,17 @@ export default function DashboardContent() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         <RevenueChart
           labels={dashboard?.revenueChart?.dailyRevenue?.map((r) => r.date) || []}
-          data={dashboard?.revenueChart?.dailyRevenue?.map((r) => r.value) || []}
+          data={dashboard?.revenueChart?.dailyRevenue?.map((r) => Number(r.value) || 0) || []}
           title={t('dashboard.revenueByDay')}
         />
         <MonthlyRevenueChart
           labels={dashboard?.revenueChart?.dailyRevenue?.map((r) => r.date) || []}
-          data={dashboard?.revenueChart?.dailyRevenue?.map((r) => r.value) || []}
+          data={dashboard?.revenueChart?.dailyRevenue?.map((r) => Number(r.value) || 0) || []}
         />
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <MostSoldProducts products={[]} />
-        <MostUsedDevices devices={[]} />
+        <MostSoldProducts products={mostSoldProducts as any} />
+        <MostUsedDevices devices={mostUsedDevices as any} />
       </div>
     </div>
   );

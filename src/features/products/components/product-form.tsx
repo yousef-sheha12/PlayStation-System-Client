@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Product, Category } from '@/types';
+import { Product } from '@/types';
 import { productSchema, type ProductFormData } from '../types';
 import Button from '@/components/ui/button';
 import Input from '@/components/ui/input';
@@ -13,12 +13,11 @@ interface ProductFormProps {
   isOpen: boolean;
   onClose: () => void;
   product?: Product | null;
-  categories: Category[];
   onSubmit: (data: ProductFormData) => void;
   isLoading?: boolean;
 }
 
-export default function ProductForm({ isOpen, onClose, product, categories, onSubmit, isLoading }: ProductFormProps) {
+export default function ProductForm({ isOpen, onClose, product, onSubmit, isLoading }: ProductFormProps) {
   const {
     register,
     handleSubmit,
@@ -30,7 +29,6 @@ export default function ProductForm({ isOpen, onClose, product, categories, onSu
       name: product?.name || '',
       price: product?.price || 0,
       quantity: product?.quantity || 0,
-      categoryId: product?.categoryId || 0,
       description: product?.description || '',
     },
   });
@@ -41,7 +39,6 @@ export default function ProductForm({ isOpen, onClose, product, categories, onSu
         name: product?.name || '',
         price: product?.price || 0,
         quantity: product?.quantity || 0,
-        categoryId: product?.categoryId || 0,
         description: product?.description || '',
       });
     }
@@ -70,27 +67,6 @@ export default function ProductForm({ isOpen, onClose, product, categories, onSu
             error={errors.quantity?.message}
             {...register('quantity', { valueAsNumber: true })}
           />
-        </div>
-        <div className="form-control">
-          <label className="label">
-            <span className="label-text font-medium text-gray-700">Category</span>
-          </label>
-          <select
-            className={`select select-bordered w-full rounded-xl bg-gray-50 border-gray-200 focus:border-blue-400 transition-all ${errors.categoryId ? 'select-error border-red-400' : ''}`}
-            {...register('categoryId', { valueAsNumber: true })}
-          >
-            <option value="">Select Category</option>
-            {categories.map((cat) => (
-              <option key={cat.id} value={cat.id}>
-                {cat.name}
-              </option>
-            ))}
-          </select>
-          {errors.categoryId && (
-            <label className="label">
-              <span className="label-text-alt text-red-500">{errors.categoryId.message}</span>
-            </label>
-          )}
         </div>
         <div className="form-control">
           <label className="label">

@@ -3,7 +3,11 @@ import { Session, SessionProduct } from '@/types';
 
 export const sessionService = {
   start: async (data: { deviceId: number; customerId?: number; customerName?: string; hourlyRate: number }): Promise<Session> => {
-    const response = await api.post<Session>('/sessions/start', data);
+    const response = await api.post<Session>('/sessions/start', {
+      deviceId: data.deviceId,
+      customerName: data.customerName || undefined,
+      hourlyRate: data.hourlyRate,
+    });
     return response.data;
   },
 
@@ -18,7 +22,7 @@ export const sessionService = {
   },
 
   end: async (id: number, discount?: number): Promise<Session> => {
-    const response = await api.post<Session>(`/sessions/${id}/end`, discount ? { discount } : undefined);
+    const response = await api.post<Session>(`/sessions/${id}/end`, { discount: discount || 0 });
     return response.data;
   },
 

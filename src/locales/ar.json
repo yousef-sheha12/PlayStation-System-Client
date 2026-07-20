@@ -29,12 +29,7 @@
     "dashboard": "لوحة التحكم",
     "devices": "الأجهزة",
     "products": "المنتجات",
-    "categories": "التصنيفات",
-    "inventory": "المخزون",
-    "customers": "العملاء",
     "invoices": "الفواتير",
-    "reports": "التقارير",
-    "expenses": "المصروفات",
     "settings": "الإعدادات",
     "managementSystem": "نظام الإدارة"
   },
@@ -91,7 +86,9 @@
     "timeCost": "تكلفة الوقت",
     "productsCost": "تكلفة المنتجات",
     "discount": "خصم",
-    "grandTotal": "المجموع الكلي"
+    "grandTotal": "المجموع الكلي",
+    "addProduct": "إضافة منتج",
+    "device": "الجهاز"
   },
   "products": {
     "title": "المنتجات",
@@ -118,52 +115,6 @@
     "deleteTitle": "حذف المنتج",
     "deleteMessage": "هل أنت متأكد من حذف هذا المنتج؟ لا يمكن التراجع عن هذا الإجراء."
   },
-  "categories": {
-    "title": "التصنيفات",
-    "subtitle": "إدارة تصنيفات المنتجات",
-    "addCategory": "إضافة تصنيف",
-    "editCategory": "تعديل التصنيف",
-    "createCategory": "إنشاء تصنيف",
-    "categoryName": "اسم التصنيف",
-    "categoryNamePlaceholder": "أدخل اسم التصنيف",
-    "noCategories": "لم يتم العثور على تصنيفات",
-    "loadingCategories": "جاري تحميل التصنيفات...",
-    "deleteTitle": "حذف التصنيف",
-    "deleteMessage": "هل أنت متأكد؟ قد تتأثر المنتجات في هذا التصنيف."
-  },
-  "inventory": {
-    "title": "المخزون",
-    "subtitle": "إدارة كميات المخزون",
-    "lowStockAlert": "{count} منتج(منتجات) منخفضة المخزون (الكمية ≤ 5)",
-    "searchInventory": "بحث في المخزون...",
-    "noInventory": "لم يتم العثور على عناصر المخزون",
-    "loadingInventory": "جاري تحميل المخزون...",
-    "increase": "زيادة",
-    "decrease": "نقصان",
-    "medium": "متوسط",
-    "adjustQuantity": "تعديل الكمية - {product}",
-    "quantityLabel": "الكمية"
-  },
-  "customers": {
-    "title": "العملاء",
-    "subtitle": "إدارة قاعدة بيانات العملاء",
-    "addCustomer": "إضافة عميل",
-    "editCustomer": "تعديل العميل",
-    "createCustomer": "إنشاء عميل",
-    "searchCustomers": "بحث في العملاء...",
-    "customer": "العميل",
-    "contact": "جهة الاتصال",
-    "address": "العنوان",
-    "noCustomers": "لم يتم العثور على عملاء",
-    "loadingCustomers": "جاري تحميل العملاء...",
-    "customerName": "اسم العميل",
-    "customerNamePlaceholder": "أدخل اسم العميل",
-    "emailOptional": "البريد الإلكتروني (اختياري)",
-    "phoneOptional": "الهاتف (اختياري)",
-    "addressOptional": "العنوان (اختياري)",
-    "deleteTitle": "حذف العميل",
-    "deleteMessage": "هل أنت متأكد من حذف هذا العميل؟"
-  },
   "invoices": {
     "title": "الفواتير",
     "subtitle": "عرض جميع الفواتير المُنشأة",
@@ -174,35 +125,9 @@
     "date": "التاريخ",
     "device": "الجهاز",
     "customer": "العميل",
-    "duration": "المدة",
+    "paymentMethod": "طريقة الدفع",
     "total": "المجموع",
     "thankYou": "شكراً لزيارتكم!"
-  },
-  "expenses": {
-    "title": "المصروفات",
-    "subtitle": "تتبع وإدارة المصروفات",
-    "addExpense": "إضافة مصروف",
-    "editExpense": "تعديل المصروف",
-    "createExpense": "إنشاء مصروف",
-    "searchExpenses": "بحث في المصروفات...",
-    "expenseTitle": "العنوان",
-    "titlePlaceholder": "عنوان المصروف",
-    "amount": "المبلغ",
-    "date": "التاريخ",
-    "noExpenses": "لم يتم العثور على مصروفات",
-    "loadingExpenses": "جاري تحميل المصروفات...",
-    "deleteTitle": "حذف المصروف",
-    "deleteMessage": "هل أنت متأكد من حذف هذا المصروف؟"
-  },
-  "reports": {
-    "title": "التقارير",
-    "subtitle": "تحليلات وأ insights للأعمال",
-    "daily": "يومي",
-    "monthly": "شهري",
-    "yearly": "سنوي",
-    "revenueByDevice": "الإيرادات حسب الجهاز",
-    "monthlyRevenue": "الإيرادات الشهرية",
-    "loadingReports": "جاري تحميل التقارير..."
   },
   "settings": {
     "title": "الإعدادات",
@@ -216,8 +141,8 @@
     "updateRate": "تحديث السعر بالساعة",
     "updateRateDesc": "تحديث السعر بالساعة لـ {device}",
     "newHourlyRate": "السعر الجديد بالساعة ($)",
-    "categoriesTitle": "التصنيفات",
-    "categoriesCount": "{count} تصنيفات",
+    "productsTitle": "المنتجات",
+    "productsCount": "{count} منتجات",
     "loadingSettings": "جاري تحميل الإعدادات..."
   },
   "notFound": {

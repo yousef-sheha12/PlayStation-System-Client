@@ -51,7 +51,7 @@ export interface Session {
   productsCost: number;
   discount: number;
   totalCost: number;
-  status: 'Active' | 'Paused' | 'Completed';
+  status: 'Active' | 'Paused' | 'Ended';
   products: SessionProduct[];
   sessionProducts: SessionProduct[];
 }

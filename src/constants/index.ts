@@ -25,7 +25,7 @@ export const DEVICE_STATUS = {
 export const SESSION_STATUS = {
   ACTIVE: "Active",
   PAUSED: "Paused",
-  COMPLETED: "Completed",
+  ENDED: "Ended",
 } as const;
 
 export const STORAGE_KEYS = {

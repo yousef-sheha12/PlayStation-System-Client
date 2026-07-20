@@ -22,10 +22,22 @@ export const useSessionStore = create<SessionState>((set, get) => ({
       const newSessions = new Map(state.activeSessions);
       newSessions.set(device.id, session);
       const newTimers = new Map(state.timers);
-      newTimers.set(device.id, {
-        startTime: session.startTime,
-        elapsedSeconds: 0,
-      });
+      const now = Math.floor(Date.now() / 1000);
+      const start = Math.floor(new Date(session.startTime).getTime() / 1000);
+      const totalPause = session.totalPauseDurationSeconds || 0;
+      const elapsedSeconds = Math.max(0, now - start - totalPause);
+      if (session.status === 'Paused') {
+        newTimers.set(device.id, {
+          startTime: session.startTime,
+          pausedAt: elapsedSeconds,
+          elapsedSeconds,
+        });
+      } else {
+        newTimers.set(device.id, {
+          startTime: session.startTime,
+          elapsedSeconds,
+        });
+      }
       return { activeSessions: newSessions, timers: newTimers };
     });
   },

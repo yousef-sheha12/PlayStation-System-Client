@@ -79,7 +79,8 @@ export default function SettingsContent() {
 
   const handleRateUpdate = () => {
     if (!rateModal) return;
-    updateDevice({ id: rateModal.id, data: { name: rateModal.name, hourlyRate: newRate, status: rateModal.status } }, {
+    const statusMap: Record<string, number> = { Available: 0, Occupied: 1, Maintenance: 2 };
+    updateDevice({ id: rateModal.id, data: { name: rateModal.name, hourlyRate: newRate, status: String(statusMap[rateModal.status] ?? 0) } }, {
       onSuccess: () => setRateModal(null),
     });
   };

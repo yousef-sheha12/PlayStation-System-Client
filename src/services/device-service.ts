@@ -7,6 +7,12 @@ const STATUS_MAP: Record<number, Device['status']> = {
   2: 'Maintenance',
 };
 
+const STATUS_MAP_REVERSE: Record<string, number> = {
+  Available: 0,
+  Occupied: 1,
+  Maintenance: 2,
+};
+
 function mapDeviceStatus(device: any): Device {
   return {
     ...device,
@@ -35,7 +41,11 @@ export const deviceService = {
   },
 
   update: async (id: number, data: { name?: string; description?: string; hourlyRate?: number; status?: string }) => {
-    const response = await api.put<any>(`/devices/${id}`, data);
+    const payload: any = { ...data };
+    if (data.status !== undefined) {
+      payload.status = STATUS_MAP_REVERSE[data.status] ?? 0;
+    }
+    const response = await api.put<any>(`/devices/${id}`, payload);
     return response.data;
   },
 

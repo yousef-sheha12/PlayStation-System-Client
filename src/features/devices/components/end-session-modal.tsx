@@ -10,6 +10,8 @@ import { useCartStore } from '@/store/cart-store';
 import { formatCurrency, formatTime } from '@/utils';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/hooks/use-translation';
+import { invoiceService } from '@/services/invoice-service';
+import toast from 'react-hot-toast';
 
 interface EndSessionModalProps {
   isOpen: boolean;
@@ -21,6 +23,7 @@ interface EndSessionModalProps {
 export default function EndSessionModal({ isOpen, onClose, device, elapsedSeconds }: EndSessionModalProps) {
   const { t } = useTranslation();
   const [discount, setDiscount] = useState(0);
+  const [paymentMethod, setPaymentMethod] = useState<'Cash' | 'Card' | 'MobilePayment'>('Cash');
   const { mutate: endSession, isPending } = useEndSession();
   const { getSession, removeSession } = useSessionStore();
   const { items, clearCart } = useCartStore();
@@ -33,15 +36,34 @@ export default function EndSessionModal({ isOpen, onClose, device, elapsedSecond
   const grandTotal = Math.max(0, subtotal - discount);
 
   const handleEnd = () => {
-    if (!session || !device) return;
+    const currentSession = device ? useSessionStore.getState().getSession(device.id) : undefined;
+    if (!currentSession || !device) return;
     endSession(
-      { id: session.id },
+      { id: currentSession.id, discount },
       {
-        onSuccess: () => {
-          removeSession(device.id);
-          clearCart();
-          onClose();
-          router.push(`/invoices?sessionId=${session.id}`);
+        onSuccess: async () => {
+          try {
+            const invoice = await invoiceService.generate({
+              sessionId: currentSession.id,
+              discount,
+              taxRate: 0,
+              paymentMethod,
+            });
+            removeSession(device.id);
+            clearCart();
+            onClose();
+            if (invoice?.id) {
+              router.push(`/invoices/${invoice.id}`);
+            } else {
+              router.push('/invoices');
+            }
+          } catch {
+            removeSession(device.id);
+            clearCart();
+            onClose();
+            router.push('/invoices');
+            toast.error('Session ended but invoice generation failed');
+          }
         },
       }
     );
@@ -53,24 +75,24 @@ export default function EndSessionModal({ isOpen, onClose, device, elapsedSecond
         <div className="bg-gray-50 rounded-xl p-4 space-y-2">
           <div className="flex justify-between text-sm">
             <span className="text-gray-500">{t('invoices.device')}</span>
-            <span className="font-semibold">{device?.name}</span>
+            <span className="font-semibold text-gray-800">{device?.name}</span>
           </div>
           <div className="flex justify-between text-sm">
             <span className="text-gray-500">{t('devices.duration')}</span>
-            <span className="font-mono font-semibold">{formatTime(elapsedSeconds)}</span>
+            <span className="font-mono font-semibold text-gray-800">{formatTime(elapsedSeconds)}</span>
           </div>
           <div className="flex justify-between text-sm">
             <span className="text-gray-500">{t('devices.hourlyRate')}</span>
-            <span>{formatCurrency(device?.hourlyRate || 0)}</span>
+            <span className="text-gray-800">{formatCurrency(device?.hourlyRate || 0)}</span>
           </div>
           <div className="flex justify-between text-sm">
             <span className="text-gray-500">{t('devices.timeCost')}</span>
-            <span className="font-semibold">{formatCurrency(hourlyCost)}</span>
+            <span className="font-semibold text-gray-800">{formatCurrency(hourlyCost)}</span>
           </div>
           {productsCost > 0 && (
             <div className="flex justify-between text-sm">
               <span className="text-gray-500">{t('devices.productsCost')}</span>
-              <span className="font-semibold">{formatCurrency(productsCost)}</span>
+              <span className="font-semibold text-gray-800">{formatCurrency(productsCost)}</span>
             </div>
           )}
           <div className="divider my-1" />
@@ -84,8 +106,29 @@ export default function EndSessionModal({ isOpen, onClose, device, elapsedSecond
               min="0"
               value={discount}
               onChange={(e) => setDiscount(Number(e.target.value))}
-              className="input input-bordered w-full rounded-xl bg-white border-gray-200 focus:border-blue-400 transition-all"
+              className="input input-bordered w-full rounded-xl bg-white border-gray-200 text-gray-800 placeholder:text-gray-400 focus:border-blue-400 transition-all"
             />
+          </div>
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text font-medium text-gray-700">{t('invoices.paymentMethod')}</span>
+            </label>
+            <div className="flex gap-2">
+              {(['Cash', 'Card', 'MobilePayment'] as const).map((method) => (
+                <button
+                  key={method}
+                  type="button"
+                  onClick={() => setPaymentMethod(method)}
+                  className={`flex-1 py-2.5 px-3 rounded-xl border text-sm font-medium transition-all ${
+                    paymentMethod === method
+                      ? 'bg-blue-500 text-white border-blue-500 shadow-md'
+                      : 'bg-white text-gray-600 border-gray-200 hover:border-blue-300'
+                  }`}
+                >
+                  {method === 'Cash' ? t('payment.cash') : method === 'Card' ? t('payment.card') : t('payment.mobile')}
+                </button>
+              ))}
+            </div>
           </div>
           <div className="divider my-1" />
           <div className="flex justify-between">

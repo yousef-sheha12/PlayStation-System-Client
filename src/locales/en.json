@@ -151,5 +151,10 @@
     "message": "The page you're looking for doesn't exist or has been moved.",
     "goBack": "Go Back",
     "dashboard": "Dashboard"
+  },
+  "payment": {
+    "cash": "Cash",
+    "card": "Card",
+    "mobile": "Mobile Payment"
   }
 }

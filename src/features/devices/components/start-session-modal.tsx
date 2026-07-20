@@ -2,6 +2,7 @@
 
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect } from 'react';
 import Modal from '@/components/ui/modal';
 import Button from '@/components/ui/button';
 import { Device } from '@/types';
@@ -33,6 +34,12 @@ export default function StartSessionModal({ isOpen, onClose, device }: StartSess
     },
   });
 
+  useEffect(() => {
+    if (device) {
+      reset({ hourlyRate: device.hourlyRate });
+    }
+  }, [device, reset]);
+
   const onSubmit = (data: StartSessionFormData) => {
     if (!device) return;
     startSession(
@@ -63,7 +70,7 @@ export default function StartSessionModal({ isOpen, onClose, device }: StartSess
           <input
             type="text"
             placeholder={t('devices.customerNamePlaceholder')}
-            className="input input-bordered w-full rounded-xl bg-gray-50 border-gray-200 focus:border-blue-400 transition-all"
+            className="input input-bordered w-full rounded-xl bg-white border-gray-200 text-gray-800 placeholder:text-gray-400 focus:border-blue-400 transition-all"
             {...register('customerName')}
           />
         </div>
@@ -75,7 +82,7 @@ export default function StartSessionModal({ isOpen, onClose, device }: StartSess
           <input
             type="number"
             step="0.01"
-            className={`input input-bordered w-full rounded-xl bg-gray-50 border-gray-200 focus:border-blue-400 transition-all ${errors.hourlyRate ? 'input-error border-red-400' : ''}`}
+            className={`input input-bordered w-full rounded-xl bg-white border-gray-200 text-gray-800 placeholder:text-gray-400 focus:border-blue-400 transition-all ${errors.hourlyRate ? 'input-error border-red-400' : ''}`}
             {...register('hourlyRate', { valueAsNumber: true })}
           />
           {errors.hourlyRate && (

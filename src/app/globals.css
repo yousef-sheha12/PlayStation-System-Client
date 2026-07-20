@@ -31,6 +31,19 @@ body {
   text-align: right;
 }
 
+input, textarea, select, .input, .textarea, .select {
+  color: #1e293b !important;
+  background-color: white !important;
+}
+
+input::placeholder, textarea::placeholder, .input::placeholder, .textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+.input .icon, .input svg, input + svg, .form-control svg {
+  color: #6b7280 !important;
+}
+
 * {
   scrollbar-width: thin;
   scrollbar-color: #cbd5e1 transparent;

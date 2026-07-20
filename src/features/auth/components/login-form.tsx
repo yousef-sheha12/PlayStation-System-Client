@@ -123,7 +123,7 @@ export default function LoginForm() {
                 <input
                   type="email"
                   placeholder={t('auth.emailPlaceholder')}
-                  className={`input input-bordered w-full pl-10 pr-4 py-3 rounded-xl bg-gray-50 border-gray-200 focus:border-blue-400 focus:bg-white focus:ring-2 focus:ring-blue-100 transition-all ${errors.email ? 'input-error border-red-400' : ''}`}
+                  className={`input input-bordered w-full pl-10 pr-4 py-3 rounded-xl bg-white border-gray-200 text-gray-800 placeholder:text-gray-400 focus:border-blue-400 focus:bg-white focus:ring-2 focus:ring-blue-100 transition-all ${errors.email ? 'input-error border-red-400' : ''}`}
                   {...register('email')}
                 />
               </div>
@@ -143,7 +143,7 @@ export default function LoginForm() {
                 <input
                   type={showPassword ? 'text' : 'password'}
                   placeholder={t('auth.passwordPlaceholder')}
-                  className={`input input-bordered w-full pl-10 pr-12 py-3 rounded-xl bg-gray-50 border-gray-200 focus:border-blue-400 focus:bg-white focus:ring-2 focus:ring-blue-100 transition-all ${errors.password ? 'input-error border-red-400' : ''}`}
+                  className={`input input-bordered w-full pl-10 pr-12 py-3 rounded-xl bg-white border-gray-200 text-gray-800 placeholder:text-gray-400 focus:border-blue-400 focus:bg-white focus:ring-2 focus:ring-blue-100 transition-all ${errors.password ? 'input-error border-red-400' : ''}`}
                   {...register('password')}
                 />
                 <button
@@ -176,9 +176,15 @@ export default function LoginForm() {
             </motion.button>
           </form>
 
-          <div className="mt-6 p-3 bg-blue-50/50 rounded-xl">
+          <div className="mt-6 p-3 bg-blue-50/50 rounded-xl space-y-1">
             <p className="text-xs text-gray-500 text-center">
-              {t('auth.demoCredentials')}: <span className="font-mono text-blue-600">admin@playstation.com</span> / <span className="font-mono text-blue-600">Admin@123</span>
+              {t('auth.demoCredentials')}:
+            </p>
+            <p className="text-xs text-center text-gray-700">
+              <span className="font-mono text-blue-600">admin@playstation.com</span> / <span className="font-mono text-blue-600">Admin@123</span>
+            </p>
+            <p className="text-xs text-center text-gray-700">
+              <span className="font-mono text-green-600">worker@playstation.com</span> / <span className="font-mono text-green-600">Worker@123</span>
             </p>
           </div>
         </motion.div>

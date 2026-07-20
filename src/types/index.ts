@@ -45,6 +45,8 @@ export interface Session {
   customerName?: string;
   startTime: string;
   endTime?: string;
+  pauseTime?: string;
+  totalPauseDurationSeconds?: number;
   hourlyRate: number;
   totalHours: number;
   deviceCost: number;
@@ -52,6 +54,7 @@ export interface Session {
   discount: number;
   totalCost: number;
   status: 'Active' | 'Paused' | 'Ended';
+  createdAt: string;
   products: SessionProduct[];
   sessionProducts: SessionProduct[];
 }

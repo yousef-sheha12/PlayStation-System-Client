@@ -26,10 +26,12 @@ export default function ProductForm({ isOpen, onClose, product, onSubmit, isLoad
   } = useForm<ProductFormData>({
     resolver: zodResolver(productSchema),
     defaultValues: {
-      name: product?.name || '',
-      price: product?.price || 0,
-      quantity: product?.quantity || 0,
-      description: product?.description || '',
+      name: '',
+      price: 0,
+      quantity: 0,
+      categoryId: 1,
+      lowStockThreshold: 5,
+      description: '',
     },
   });
 
@@ -39,6 +41,8 @@ export default function ProductForm({ isOpen, onClose, product, onSubmit, isLoad
         name: product?.name || '',
         price: product?.price || 0,
         quantity: product?.quantity || 0,
+        categoryId: product?.categoryId || 1,
+        lowStockThreshold: product?.lowStockThreshold || 5,
         description: product?.description || '',
       });
     }
@@ -68,12 +72,18 @@ export default function ProductForm({ isOpen, onClose, product, onSubmit, isLoad
             {...register('quantity', { valueAsNumber: true })}
           />
         </div>
+        <Input
+          label="Low Stock Threshold"
+          type="number"
+          error={errors.lowStockThreshold?.message}
+          {...register('lowStockThreshold', { valueAsNumber: true })}
+        />
         <div className="form-control">
           <label className="label">
             <span className="label-text font-medium text-gray-700">Description (Optional)</span>
           </label>
           <textarea
-            className="textarea textarea-bordered w-full rounded-xl bg-gray-50 border-gray-200 focus:border-blue-400 transition-all h-20"
+            className="textarea textarea-bordered w-full rounded-xl bg-white border-gray-200 text-gray-800 placeholder:text-gray-400 focus:border-blue-400 transition-all h-20"
             placeholder="Enter description"
             {...register('description')}
           />

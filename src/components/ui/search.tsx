@@ -34,7 +34,7 @@ export default function Search({ placeholder = 'Search...', onSearch, debounceMs
         placeholder={placeholder}
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        className="input input-bordered w-full pl-10 pr-10 rounded-xl bg-white/80 backdrop-blur-sm border-gray-200 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all duration-200"
+        className="input input-bordered w-full pl-10 pr-10 rounded-xl bg-white border-gray-200 text-gray-800 placeholder:text-gray-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all duration-200"
       />
       {query && (
         <button

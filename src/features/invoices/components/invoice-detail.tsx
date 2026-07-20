@@ -95,10 +95,10 @@ export default function InvoiceDetail({ invoice, onBack }: InvoiceDetailProps) {
                   <tbody>
                     {invoice.items.map((item) => (
                       <tr key={item.id}>
-                        <td className="text-sm">{item.productName}</td>
-                        <td className="text-sm">{item.quantity}</td>
-                        <td className="text-sm">{formatCurrency(item.unitPrice)}</td>
-                        <td className="text-sm text-right font-medium">{formatCurrency(item.totalPrice)}</td>
+                        <td className="text-sm text-gray-800">{item.productName}</td>
+                        <td className="text-sm text-gray-800">{item.quantity}</td>
+                        <td className="text-sm text-gray-800">{formatCurrency(item.unitPrice)}</td>
+                        <td className="text-sm text-right font-medium text-gray-800">{formatCurrency(item.totalPrice)}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -110,7 +110,7 @@ export default function InvoiceDetail({ invoice, onBack }: InvoiceDetailProps) {
           <div className="border-t border-gray-200 pt-6 space-y-2">
             <div className="flex justify-between text-sm">
               <span className="text-gray-500">Sub Total</span>
-              <span className="font-medium">{formatCurrency(invoice.subTotal)}</span>
+              <span className="font-medium text-gray-800">{formatCurrency(invoice.subTotal)}</span>
             </div>
             {invoice.discount > 0 && (
               <div className="flex justify-between text-sm text-red-500">
@@ -120,7 +120,7 @@ export default function InvoiceDetail({ invoice, onBack }: InvoiceDetailProps) {
             )}
             <div className="flex justify-between text-sm">
               <span className="text-gray-500">Tax ({invoice.taxRate}%)</span>
-              <span className="font-medium">{formatCurrency(invoice.taxAmount)}</span>
+              <span className="font-medium text-gray-800">{formatCurrency(invoice.taxAmount)}</span>
             </div>
             <div className="flex justify-between text-lg font-bold pt-2 border-t border-gray-200">
               <span className="text-gray-800">Grand Total</span>

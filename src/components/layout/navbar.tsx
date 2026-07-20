@@ -72,7 +72,7 @@ export default function Navbar() {
             <input
               type="text"
               placeholder={t("common.search")}
-              className="input input-bordered w-full pl-9 pr-4 py-2 rounded-xl bg-gray-50 border-gray-200 text-sm focus:bg-white focus:border-blue-400 transition-all"
+              className="input input-bordered w-full pl-9 pr-4 py-2 rounded-xl bg-white border-gray-200 text-sm text-gray-800 placeholder:text-gray-400 focus:bg-white focus:border-blue-400 transition-all"
             />
           </div>
         </div>

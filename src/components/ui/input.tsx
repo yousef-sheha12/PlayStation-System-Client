@@ -30,7 +30,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           )}
           <input
             ref={ref}
-            className={`input input-bordered w-full rounded-xl bg-white/80 backdrop-blur-sm border-gray-200 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all duration-200 ${icon ? 'pl-10' : ''} ${error ? 'input-error border-red-400' : ''} ${className}`}
+            className={`input input-bordered w-full rounded-xl bg-white border-gray-200 text-gray-800 placeholder:text-gray-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all duration-200 ${icon ? 'pl-10' : ''} ${error ? 'input-error border-red-400' : ''} ${className}`}
             {...props}
           />
         </div>

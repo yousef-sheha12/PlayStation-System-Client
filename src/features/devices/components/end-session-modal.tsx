@@ -64,11 +64,12 @@ export default function EndSessionModal({ isOpen, onClose, device, elapsedSecond
             } else {
               router.push('/invoices');
             }
-          } catch {
+          } catch (error: any) {
             removeSession(device.id);
             onClose();
             router.push('/invoices');
-            toast.error('Session ended but invoice generation failed');
+            const msg = error?.response?.data?.error || error?.response?.data?.message || 'Session ended but invoice generation failed';
+            toast.error(msg);
           }
         },
       }

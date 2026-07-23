@@ -150,13 +150,13 @@ export default function Navbar() {
                 </p>
                 <p className="text-[10px] text-gray-500">{t("nav.admin")}</p>
               </div>
-              <ChevronDown
+              {/* <ChevronDown
                 size={14}
                 className={`hidden md:block text-gray-400 transition-transform ${dropdownOpen ? "rotate-180" : ""}`}
-              />
+              /> */}
             </motion.div>
 
-            <AnimatePresence>
+            {/* <AnimatePresence>
               {dropdownOpen && (
                 <motion.div
                   initial={{ opacity: 0, y: -8, scale: 0.95 }}
@@ -194,7 +194,7 @@ export default function Navbar() {
                   </div>
                 </motion.div>
               )}
-            </AnimatePresence>
+            </AnimatePresence> */}
           </div>
         </div>
       </div>

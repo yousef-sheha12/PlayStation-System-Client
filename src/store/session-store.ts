@@ -3,11 +3,9 @@ import { Session, Device } from '@/types';
 
 interface SessionState {
   activeSessions: Map<number, Session>;
-  timers: Map<number, { startTime: string; pausedAt?: number; elapsedSeconds: number }>;
+  timers: Map<number, { startTime: string; elapsedSeconds: number }>;
   addSession: (device: Device, session: Session) => void;
   removeSession: (deviceId: number) => void;
-  pauseTimer: (deviceId: number) => void;
-  resumeTimer: (deviceId: number) => void;
   updateElapsed: (deviceId: number, seconds: number) => void;
   getSession: (deviceId: number) => Session | undefined;
   getElapsed: (deviceId: number) => number;
@@ -24,20 +22,11 @@ export const useSessionStore = create<SessionState>((set, get) => ({
       const newTimers = new Map(state.timers);
       const now = Math.floor(Date.now() / 1000);
       const start = Math.floor(new Date(session.startTime).getTime() / 1000);
-      const totalPause = session.totalPauseDurationSeconds || 0;
-      const elapsedSeconds = Math.max(0, now - start - totalPause);
-      if (session.status === 'Paused') {
-        newTimers.set(device.id, {
-          startTime: session.startTime,
-          pausedAt: elapsedSeconds,
-          elapsedSeconds,
-        });
-      } else {
-        newTimers.set(device.id, {
-          startTime: session.startTime,
-          elapsedSeconds,
-        });
-      }
+      const elapsedSeconds = Math.max(0, now - start);
+      newTimers.set(device.id, {
+        startTime: session.startTime,
+        elapsedSeconds,
+      });
       return { activeSessions: newSessions, timers: newTimers };
     });
   },
@@ -52,33 +41,11 @@ export const useSessionStore = create<SessionState>((set, get) => ({
     });
   },
 
-  pauseTimer: (deviceId) => {
-    set((state) => {
-      const newTimers = new Map(state.timers);
-      const timer = newTimers.get(deviceId);
-      if (timer) {
-        newTimers.set(deviceId, { ...timer, pausedAt: timer.elapsedSeconds });
-      }
-      return { timers: newTimers };
-    });
-  },
-
-  resumeTimer: (deviceId) => {
-    set((state) => {
-      const newTimers = new Map(state.timers);
-      const timer = newTimers.get(deviceId);
-      if (timer) {
-        newTimers.set(deviceId, { ...timer, pausedAt: undefined });
-      }
-      return { timers: newTimers };
-    });
-  },
-
   updateElapsed: (deviceId, seconds) => {
     set((state) => {
       const newTimers = new Map(state.timers);
       const timer = newTimers.get(deviceId);
-      if (timer && timer.pausedAt === undefined && !isNaN(seconds) && seconds >= 0) {
+      if (timer && !isNaN(seconds) && seconds >= 0) {
         newTimers.set(deviceId, { ...timer, elapsedSeconds: seconds });
       }
       return { timers: newTimers };

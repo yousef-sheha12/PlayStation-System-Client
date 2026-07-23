@@ -35,34 +35,6 @@ export function useStartSession() {
   });
 }
 
-export function usePauseSession() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: sessionService.pause,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.SESSIONS] });
-      toast.success('Session paused');
-    },
-    onError: () => {
-      toast.error('Failed to pause session');
-    },
-  });
-}
-
-export function useResumeSession() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: sessionService.resume,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.SESSIONS] });
-      toast.success('Session resumed');
-    },
-    onError: () => {
-      toast.error('Failed to resume session');
-    },
-  });
-}
-
 export function useEndSession() {
   const queryClient = useQueryClient();
   return useMutation({

@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { forwardRef, InputHTMLAttributes } from 'react';
-import { motion } from 'framer-motion';
+import { forwardRef, InputHTMLAttributes } from "react";
+import { motion } from "framer-motion";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -10,7 +10,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ label, error, icon, className = '', ...props }, ref) => {
+  ({ label, error, icon, className = "", ...props }, ref) => {
     return (
       <motion.div
         initial={{ opacity: 0, y: 10 }}
@@ -19,7 +19,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       >
         {label && (
           <label className="label">
-            <span className="label-text font-medium text-gray-700">{label}</span>
+            <span className="label-text font-medium text-gray-700">
+              {label}
+            </span>
           </label>
         )}
         <div className="relative">
@@ -30,7 +32,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           )}
           <input
             ref={ref}
-            className={`input input-bordered w-full rounded-xl bg-white border-gray-200 text-gray-800 placeholder:text-gray-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all duration-200 ${icon ? 'pl-10' : ''} ${error ? 'input-error border-red-400' : ''} ${className}`}
+            className={`input input-bordered w-full rounded-xl bg-white border-gray-200 text-gray-800 placeholder:text-gray-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all duration-200 ${icon ? "pl-10" : ""} ${error ? "input-error border-red-400" : ""} ${className}`}
             {...props}
           />
         </div>
@@ -41,8 +43,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         )}
       </motion.div>
     );
-  }
+  },
 );
 
-Input.displayName = 'Input';
+Input.displayName = "Input";
 export default Input;

@@ -11,10 +11,12 @@ export function usePermissions() {
     canManageProducts: isAdmin(),
     canManageDevices: isAdmin(),
     canManageSettings: isAdmin(),
+    canViewDashboard: isAdmin(),
 
-    canViewProducts: true,
     canViewDevices: true,
-    canViewInvoices: true,
+    canViewProducts: isAdmin(),
+    canViewInvoices: isAdmin(),
+    canViewReports: isAdmin(),
 
     canStartSession: true,
     canEndSession: true,

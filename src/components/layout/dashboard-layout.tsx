@@ -8,9 +8,10 @@ import Navbar from './navbar';
 import { useAuthStore } from '@/store/auth-store';
 import { useThemeStore } from '@/store/theme-store';
 import { useLanguageStore } from '@/store/language-store';
+import { ROLES } from '@/constants';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated, initialize } = useAuthStore();
+  const { isAuthenticated, user, initialize } = useAuthStore();
   const { sidebarOpen } = useThemeStore();
   const { initialize: initLang, dir } = useLanguageStore();
   const router = useRouter();
@@ -24,8 +25,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   useEffect(() => {
     if (!isAuthenticated) {
       router.push('/login');
+    } else if (user?.role === ROLES.WORKER && window.location.pathname === '/dashboard') {
+      router.push('/devices');
     }
-  }, [isAuthenticated, router]);
+  }, [isAuthenticated, user, router]);
 
   if (!isAuthenticated) {
     return null;

@@ -20,6 +20,7 @@ import { useAuthStore } from "@/store/auth-store";
 import { useLanguageStore } from "@/store/language-store";
 import { useTranslation } from "@/hooks/use-translation";
 import { useRouter } from "next/navigation";
+import { ROLES } from "@/constants";
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -30,6 +31,7 @@ export default function Sidebar() {
   const { t } = useTranslation();
   const [mobileOpen, setMobileOpen] = useState(false);
   const isRtl = dir === "rtl";
+  const isAdmin = user?.role === ROLES.ADMIN;
 
   useEffect(() => {
     setMobileOpen(false);
@@ -41,16 +43,23 @@ export default function Sidebar() {
   };
 
   const menuItems = [
-    {
-      href: "/dashboard",
-      label: t("sidebar.dashboard"),
-      icon: LayoutDashboard,
-    },
+    ...(isAdmin
+      ? [
+          {
+            href: "/dashboard",
+            label: t("sidebar.dashboard"),
+            icon: LayoutDashboard,
+          },
+        ]
+      : []),
     { href: "/devices", label: t("sidebar.devices"), icon: Gamepad2 },
-    { href: "/products", label: t("sidebar.products"), icon: Package },
-    // { href: '/customers', label: t('sidebar.customers'), icon: Users },
-    { href: "/invoices", label: t("sidebar.invoices"), icon: FileText },
-    { href: "/settings", label: t("sidebar.settings"), icon: Settings },
+    ...(isAdmin
+      ? [
+          { href: "/products", label: t("sidebar.products"), icon: Package },
+          { href: "/invoices", label: t("sidebar.invoices"), icon: FileText },
+          { href: "/settings", label: t("sidebar.settings"), icon: Settings },
+        ]
+      : []),
   ];
 
   const SidebarContent = ({ collapsed }: { collapsed: boolean }) => (

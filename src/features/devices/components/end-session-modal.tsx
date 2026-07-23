@@ -1,16 +1,16 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Modal from '@/components/ui/modal';
 import Button from '@/components/ui/button';
 import { Device } from '@/types';
 import { useEndSession } from '@/hooks/use-sessions';
 import { useSessionStore } from '@/store/session-store';
-import { useCartStore } from '@/store/cart-store';
 import { formatCurrency, formatTime } from '@/utils';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/hooks/use-translation';
 import { invoiceService } from '@/services/invoice-service';
+import { sessionService } from '@/services/session-service';
 import toast from 'react-hot-toast';
 
 interface EndSessionModalProps {
@@ -26,12 +26,20 @@ export default function EndSessionModal({ isOpen, onClose, device, elapsedSecond
   const [paymentMethod, setPaymentMethod] = useState<'Cash' | 'Card' | 'MobilePayment'>('Cash');
   const { mutate: endSession, isPending } = useEndSession();
   const { getSession, removeSession } = useSessionStore();
-  const { items, clearCart } = useCartStore();
   const router = useRouter();
 
   const session = device ? getSession(device.id) : undefined;
+  const [sessionProducts, setSessionProducts] = useState(session?.products || []);
+
+  useEffect(() => {
+    if (!isOpen || !session?.id) return;
+    sessionService.getById(session.id).then((s) => {
+      setSessionProducts(s.products || s.sessionProducts || []);
+    }).catch(() => {});
+  }, [isOpen, session?.id]);
+
   const hourlyCost = device ? (elapsedSeconds / 3600) * device.hourlyRate : 0;
-  const productsCost = items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+  const productsCost = sessionProducts.reduce((sum, item) => sum + item.unitPrice * item.quantity, 0);
   const subtotal = hourlyCost + productsCost;
   const grandTotal = Math.max(0, subtotal - discount);
 
@@ -50,7 +58,6 @@ export default function EndSessionModal({ isOpen, onClose, device, elapsedSecond
               paymentMethod,
             });
             removeSession(device.id);
-            clearCart();
             onClose();
             if (invoice?.id) {
               router.push(`/invoices/${invoice.id}`);
@@ -59,7 +66,6 @@ export default function EndSessionModal({ isOpen, onClose, device, elapsedSecond
             }
           } catch {
             removeSession(device.id);
-            clearCart();
             onClose();
             router.push('/invoices');
             toast.error('Session ended but invoice generation failed');
@@ -89,12 +95,24 @@ export default function EndSessionModal({ isOpen, onClose, device, elapsedSecond
             <span className="text-gray-500">{t('devices.timeCost')}</span>
             <span className="font-semibold text-gray-800">{formatCurrency(hourlyCost)}</span>
           </div>
-          {productsCost > 0 && (
-            <div className="flex justify-between text-sm">
-              <span className="text-gray-500">{t('devices.productsCost')}</span>
-              <span className="font-semibold text-gray-800">{formatCurrency(productsCost)}</span>
-            </div>
+
+          {sessionProducts.length > 0 && (
+            <>
+              <div className="divider my-1" />
+              <p className="text-sm font-medium text-gray-600">{t('devices.products')}:</p>
+              {sessionProducts.map((item) => (
+                <div key={item.id} className="flex justify-between text-sm">
+                  <span className="text-gray-500">{item.productName} x{item.quantity}</span>
+                  <span className="font-semibold text-gray-800">{formatCurrency(item.unitPrice * item.quantity)}</span>
+                </div>
+              ))}
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-500">{t('devices.productsCost')}</span>
+                <span className="font-semibold text-gray-800">{formatCurrency(productsCost)}</span>
+              </div>
+            </>
           )}
+
           <div className="divider my-1" />
           <div className="form-control">
             <label className="label">

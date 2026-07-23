@@ -2,14 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { PlayCircle, PauseCircle, StopCircle, DollarSign, Clock, Gamepad2, ShoppingBag } from 'lucide-react';
+import { PlayCircle, StopCircle, DollarSign, Clock, Gamepad2, ShoppingBag } from 'lucide-react';
 import { Device } from '@/types';
 import { formatCurrency, formatTime } from '@/utils';
 import { useSessionStore } from '@/store/session-store';
 import Badge from '@/components/ui/badge';
 import Button from '@/components/ui/button';
-import { usePauseSession, useResumeSession } from '@/hooks/use-sessions';
-import { sessionService } from '@/services/session-service';
 import { useTranslation } from '@/hooks/use-translation';
 
 interface DeviceCardProps {
@@ -22,16 +20,12 @@ interface DeviceCardProps {
 export default function DeviceCard({ device, onStartSession, onEndSession, onAddProduct }: DeviceCardProps) {
   const { t } = useTranslation();
   const [elapsed, setElapsed] = useState(0);
-  const { mutate: pauseSession } = usePauseSession();
-  const { mutate: resumeSession } = useResumeSession();
 
   const isActive = device.status === 'Occupied';
   const timer = useSessionStore((s) => s.timers.get(device.id));
-  const session = useSessionStore((s) => s.activeSessions.get(device.id));
-  const isPaused = timer?.pausedAt !== undefined;
 
   useEffect(() => {
-    if (!isActive || !timer || isPaused) return;
+    if (!isActive || !timer) return;
     const interval = setInterval(() => {
       const now = Math.floor(Date.now() / 1000);
       const start = Math.floor(new Date(timer.startTime).getTime() / 1000);
@@ -40,9 +34,7 @@ export default function DeviceCard({ device, onStartSession, onEndSession, onAdd
       useSessionStore.getState().updateElapsed(device.id, newElapsed);
     }, 1000);
     return () => clearInterval(interval);
-  }, [isActive, timer, isPaused, device.id]);
-
-  useEffect(() => { if (isPaused && timer) setElapsed(timer.pausedAt!); }, [isPaused, timer]);
+  }, [isActive, timer, device.id]);
 
   const currentCost = formatCurrency(isNaN(elapsed) || !device.hourlyRate ? 0 : (elapsed / 3600) * device.hourlyRate);
   const statusVariant = isActive ? 'danger' : device.status === 'Maintenance' ? 'warning' : 'success';
@@ -52,17 +44,6 @@ export default function DeviceCard({ device, onStartSession, onEndSession, onAdd
     Available: 'from-green-400 to-emerald-500',
     Occupied: 'from-red-400 to-rose-500',
     Maintenance: 'from-amber-400 to-orange-500',
-  };
-
-  const handlePause = () => {
-    const sess = session || useSessionStore.getState().activeSessions.get(device.id);
-    if (!sess) return;
-    pauseSession(sess.id, { onSuccess: () => useSessionStore.getState().pauseTimer(device.id) });
-  };
-  const handleResume = () => {
-    const sess = session || useSessionStore.getState().activeSessions.get(device.id);
-    if (!sess) return;
-    resumeSession(sess.id, { onSuccess: () => useSessionStore.getState().resumeTimer(device.id) });
   };
 
   return (
@@ -89,7 +70,7 @@ export default function DeviceCard({ device, onStartSession, onEndSession, onAdd
             <>
               <div className="flex items-center justify-between">
                 <span className="text-gray-500 flex items-center gap-1.5"><Clock size={16} /> {t('devices.elapsed')}</span>
-                <span className={`font-mono font-bold text-xl ${isPaused ? 'text-amber-500' : 'text-blue-600'}`}>{formatTime(isNaN(elapsed) ? 0 : elapsed)}</span>
+                <span className="font-mono font-bold text-xl text-blue-600">{formatTime(isNaN(elapsed) ? 0 : elapsed)}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-gray-500">{t('devices.currentCost')}</span>
@@ -101,14 +82,8 @@ export default function DeviceCard({ device, onStartSession, onEndSession, onAdd
         <div className="flex gap-2">
           {!isActive ? (
             <Button variant="success" size="md" className="flex-1" icon={<PlayCircle size={18} />} onClick={() => onStartSession(device)}>{t('devices.startSession')}</Button>
-          ) : isPaused ? (
-            <>
-              <Button variant="success" size="md" className="flex-1" icon={<PlayCircle size={18} />} onClick={handleResume}>{t('devices.resume')}</Button>
-              <Button variant="danger" size="md" className="flex-1" icon={<StopCircle size={18} />} onClick={() => onEndSession(device)}>{t('devices.end')}</Button>
-            </>
           ) : (
             <>
-              <Button variant="primary" size="md" className="flex-1" icon={<PauseCircle size={18} />} onClick={handlePause}>{t('devices.pause')}</Button>
               {onAddProduct && (
                 <Button variant="ghost" size="md" icon={<ShoppingBag size={16} />} onClick={() => onAddProduct(device)}>{t('devices.addProduct')}</Button>
               )}

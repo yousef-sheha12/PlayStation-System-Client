@@ -23,15 +23,16 @@ export const invoiceService = {
     return response.data;
   },
 
-  generate: async (data: { sessionId: number; discount?: number; taxRate?: number; paymentMethod?: string }) => {
+  generate: async (data: { sessionId: number; discount?: number; taxRate?: number; paymentMethod?: string }): Promise<Invoice> => {
     const payload = {
       sessionId: data.sessionId,
       discount: data.discount || 0,
       taxRate: data.taxRate || 0,
       paymentMethod: data.paymentMethod ? PAYMENT_METHOD_MAP[data.paymentMethod] ?? 0 : 0,
     };
-    const response = await api.post<Invoice>('/invoices/generate', payload);
-    return response.data;
+    const response = await api.post<any>('/invoices/generate', payload);
+    const result = response.data;
+    return result?.data ?? result;
   },
 
   updatePayment: async (invoiceId: number, isPaid: boolean) => {

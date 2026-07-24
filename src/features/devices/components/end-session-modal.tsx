@@ -4,12 +4,11 @@ import { useState, useEffect } from 'react';
 import Modal from '@/components/ui/modal';
 import Button from '@/components/ui/button';
 import { Device } from '@/types';
-import { useEndSession } from '@/hooks/use-sessions';
+import { useEndSessionAndInvoice } from '@/hooks/use-sessions';
 import { useSessionStore } from '@/store/session-store';
 import { formatCurrency, formatTime } from '@/utils';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/hooks/use-translation';
-import { invoiceService } from '@/services/invoice-service';
 import { sessionService } from '@/services/session-service';
 import toast from 'react-hot-toast';
 
@@ -24,7 +23,7 @@ export default function EndSessionModal({ isOpen, onClose, device, elapsedSecond
   const { t } = useTranslation();
   const [discount, setDiscount] = useState(0);
   const [paymentMethod, setPaymentMethod] = useState<'Cash' | 'Card' | 'MobilePayment'>('Cash');
-  const { mutateAsync: endSession, isPending } = useEndSession();
+  const { mutateAsync: endSessionAndInvoice, isPending } = useEndSessionAndInvoice();
   const { getSession, removeSession } = useSessionStore();
   const router = useRouter();
 
@@ -47,9 +46,8 @@ export default function EndSessionModal({ isOpen, onClose, device, elapsedSecond
     const currentSession = device ? useSessionStore.getState().getSession(device.id) : undefined;
     if (!currentSession || !device) return;
     try {
-      await endSession({ id: currentSession.id, discount });
-      const invoice = await invoiceService.generate({
-        sessionId: currentSession.id,
+      const invoice = await endSessionAndInvoice({
+        id: currentSession.id,
         discount,
         taxRate: 0,
         paymentMethod,

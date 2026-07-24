@@ -52,6 +52,19 @@ export function useEndSession() {
   });
 }
 
+export function useEndSessionAndInvoice() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, discount, taxRate, paymentMethod }: { id: number; discount?: number; taxRate?: number; paymentMethod?: string }) =>
+      sessionService.endAndInvoice(id, { discount, taxRate, paymentMethod }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.SESSIONS] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DEVICES] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DASHBOARD] });
+    },
+  });
+}
+
 export function useAddSessionProduct() {
   const queryClient = useQueryClient();
   return useMutation({

@@ -1,5 +1,5 @@
 import api from '@/lib/axios';
-import { Session, SessionProduct } from '@/types';
+import { Invoice, Session, SessionProduct } from '@/types';
 
 const SESSION_STATUS_MAP: Record<number, Session['status']> = {
   0: 'Active',
@@ -19,6 +19,12 @@ function mapSessionStatus(session: any): Session {
 function mapSessions(sessions: any[]): Session[] {
   return sessions.map(mapSessionStatus);
 }
+
+const PAYMENT_METHOD_MAP: Record<string, number> = {
+  Cash: 0,
+  Card: 1,
+  MobilePayment: 2,
+};
 
 export const sessionService = {
   start: async (data: { deviceId: number; customerId?: number; customerName?: string; hourlyRate: number }): Promise<Session> => {
@@ -42,6 +48,16 @@ export const sessionService = {
   end: async (id: number, discount?: number): Promise<Session> => {
     const response = await api.post<any>(`/sessions/${id}/end`, { discount: discount || 0 });
     return mapSessionStatus(response.data);
+  },
+
+  endAndInvoice: async (id: number, data: { discount?: number; taxRate?: number; paymentMethod?: string }): Promise<Invoice> => {
+    const payload = {
+      discount: data.discount || 0,
+      taxRate: data.taxRate || 0,
+      paymentMethod: data.paymentMethod ? PAYMENT_METHOD_MAP[data.paymentMethod] ?? 0 : 0,
+    };
+    const response = await api.post<Invoice>(`/sessions/${id}/end-and-invoice`, payload);
+    return response.data;
   },
 
   getActive: async (): Promise<Session[]> => {

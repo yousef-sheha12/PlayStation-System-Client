@@ -68,7 +68,7 @@ export default function EndSessionModal({ isOpen, onClose, device, elapsedSecond
             removeSession(device.id);
             onClose();
             router.push('/invoices');
-            const msg = error?.response?.data?.error || error?.response?.data?.message || 'Session ended but invoice generation failed';
+            const msg = error?.response?.data?.message || error?.message || 'Session ended but invoice generation failed';
             toast.error(msg);
           }
         },

@@ -30,9 +30,8 @@ export const invoiceService = {
       taxRate: data.taxRate || 0,
       paymentMethod: data.paymentMethod ? PAYMENT_METHOD_MAP[data.paymentMethod] ?? 0 : 0,
     };
-    const response = await api.post<any>('/invoices/generate', payload);
-    const result = response.data;
-    return result?.data ?? result;
+    const response = await api.post<Invoice>('/invoices/generate', payload);
+    return response.data;
   },
 
   updatePayment: async (invoiceId: number, isPaid: boolean) => {

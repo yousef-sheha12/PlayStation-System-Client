@@ -24,7 +24,7 @@ export default function EndSessionModal({ isOpen, onClose, device, elapsedSecond
   const { t } = useTranslation();
   const [discount, setDiscount] = useState(0);
   const [paymentMethod, setPaymentMethod] = useState<'Cash' | 'Card' | 'MobilePayment'>('Cash');
-  const { mutate: endSession, isPending } = useEndSession();
+  const { mutateAsync: endSession, isPending } = useEndSession();
   const { getSession, removeSession } = useSessionStore();
   const router = useRouter();
 
@@ -43,37 +43,31 @@ export default function EndSessionModal({ isOpen, onClose, device, elapsedSecond
   const subtotal = hourlyCost + productsCost;
   const grandTotal = Math.max(0, subtotal - discount);
 
-  const handleEnd = () => {
+  const handleEnd = async () => {
     const currentSession = device ? useSessionStore.getState().getSession(device.id) : undefined;
     if (!currentSession || !device) return;
-    endSession(
-      { id: currentSession.id, discount },
-      {
-        onSuccess: async () => {
-          try {
-            const invoice = await invoiceService.generate({
-              sessionId: currentSession.id,
-              discount,
-              taxRate: 0,
-              paymentMethod,
-            });
-            removeSession(device.id);
-            onClose();
-            if (invoice?.id) {
-              router.push(`/invoices/${invoice.id}`);
-            } else {
-              router.push('/invoices');
-            }
-          } catch (error: any) {
-            removeSession(device.id);
-            onClose();
-            router.push('/invoices');
-            const msg = error?.response?.data?.message || error?.message || 'Session ended but invoice generation failed';
-            toast.error(msg);
-          }
-        },
+    try {
+      await endSession({ id: currentSession.id, discount });
+      const invoice = await invoiceService.generate({
+        sessionId: currentSession.id,
+        discount,
+        taxRate: 0,
+        paymentMethod,
+      });
+      removeSession(device.id);
+      onClose();
+      if (invoice?.id) {
+        router.push(`/invoices/${invoice.id}`);
+      } else {
+        router.push('/invoices');
       }
-    );
+    } catch (error: any) {
+      removeSession(device.id);
+      onClose();
+      router.push('/invoices');
+      const msg = error?.response?.data?.message || error?.message || 'Session ended but invoice generation failed';
+      toast.error(msg);
+    }
   };
 
   return (
